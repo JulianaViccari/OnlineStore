@@ -1,4 +1,4 @@
-import Product from "../src/product"
+import Product from "../../src/entities/product"
 
 test("should created new Product", function () {
     let productDove = new Product("1", "Dove", "shampoo", 17.90);

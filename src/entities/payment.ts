@@ -12,9 +12,9 @@ export default class Payment {
         this.coupon = coupon
     }
 
-    pay() :number {
+    pay(): number {
         let percent = this.coupon.getPercent() / 100;
         let total = this.order.getAmount() - (this.order.getAmount() * percent);
-        return  total;
+        return total;
     }
 }

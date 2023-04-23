@@ -1,23 +1,23 @@
 import Product from "./product";
 
-export default class OrderDetail{
+export default class OrderDetail {
     private product: Product;
     private quantity: number;
 
-    constructor(product: Product, quantity: number){
+    constructor(product: Product, quantity: number) {
         this.product = product;
         this.quantity = quantity;
     }
 
-    getProductName() :string {
+    getProductName(): string {
         return this.product.getName();
     }
 
-    getProductUnitPrice() :number {
+    getProductUnitPrice(): number {
         return this.product.getPrice();
     }
 
-    getProductAmount() :number{
+    getProductAmount(): number {
         return this.product.getPrice() * this.quantity;
     }
 }

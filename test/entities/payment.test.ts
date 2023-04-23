@@ -1,22 +1,22 @@
-import Payment from "../src/payment"
-import Client from "../src/client";
-import Order from "../src/order";
-import OrderDetail from "../src/order_detail";
-import Product from "../src/product";
-import Coupon from "../src/coupon"
+import Payment from "../../src/entities/payment"
+import Client from "../../src/entities/client";
+import Order from "../../src/entities/order";
+import OrderDetail from "../../src/entities/order_detail";
+import Product from "../../src/entities/product";
+import Coupon from "../../src/entities/coupon"
 
-test("should created new Payment", function() {
+test("should created new Payment", function () {
     let client = new Client(
-        "Henrique Viccari", 
-        "67464608607", 
-        "h.v@gmail.com", 
+        "Henrique Viccari",
+        "67464608607",
+        "h.v@gmail.com",
         "rua 1, 55, bairro Felidz, cep: 14620-000, orlândia-Sp")
     let product = new Product("1", "Dove", "shampoo", 17.90);
     let orderDetail = new OrderDetail(product, 2);
     let productList = [orderDetail];
     let today = new Date()
     let coupon = new Coupon("discount10", today, 5, 15);
-    let order = new Order("1", client, productList );
+    let order = new Order("1", client, productList);
     let payment = new Payment("Débito", order, coupon);
 
     expect(payment.pay()).toBe(34.01)
@@ -24,9 +24,9 @@ test("should created new Payment", function() {
 
 test("Should created new order an order with 3 products, associate a discount coupon and calculate the total", function () {
     let client = new Client(
-        "Henrique Viccari", 
-        "67464608607", 
-        "h.v@gmail.com", 
+        "Henrique Viccari",
+        "67464608607",
+        "h.v@gmail.com",
         "rua 1, 55, bairro Felidz, cep: 14620-000, orlândia-Sp")
     let today = new Date()
     let coupon = new Coupon("discount10", today, 5, 15);
@@ -37,7 +37,7 @@ test("Should created new order an order with 3 products, associate a discount co
     let orderDetail2 = new OrderDetail(product2, 2);
     let orderDetail3 = new OrderDetail(product3, 2);
     let productList = [orderDetail1, orderDetail2, orderDetail3];
-    let order = new Order("1", client, productList )
+    let order = new Order("1", client, productList)
     let payment = new Payment("Débito", order, coupon);
 
     expect(order.getAmount()).toBe(101.6);

@@ -1,5 +1,5 @@
-import OrderDetail from "../src/order_detail";
-import Product from "../src/product";
+import OrderDetail from "../../src/entities/order_detail";
+import Product from "../../src/entities/product";
 
 test("should created new OrderDetails", function () {
     let product = new Product("1", "Dove", "shampoo", 17.90);

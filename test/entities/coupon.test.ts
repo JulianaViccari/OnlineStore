@@ -1,4 +1,4 @@
-import Coupon from "../src/coupon"
+import Coupon from "../../src/entities/coupon"
 
 test("should created new Coupon", function () {
     let today = new Date()

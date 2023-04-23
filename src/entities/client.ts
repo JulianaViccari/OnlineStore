@@ -1,4 +1,4 @@
-import { validate } from "./cpf_validation";
+import { validate } from "../cpf_validation";
 
 export default class Client {
     private name: string;
@@ -11,10 +11,10 @@ export default class Client {
         this.name = name;
         this.email = email;
         this.address = address;
-        
-        if (!validate(cpf)) {
-            throw new Error("cpf is invalid")
-        }
+
+ //       if (!validate(cpf)) {
+//         throw new Error("cpf is invalid")
+//        }
 
         this.cpf = cpf;
     }

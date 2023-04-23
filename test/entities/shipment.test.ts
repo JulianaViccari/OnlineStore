@@ -1,4 +1,4 @@
-import Shipment from "../src/shipment";
+import Shipment from "../../src/entities/shipment";
 
 test("should created new Shipment", function () {
     let shipment = new Shipment();
