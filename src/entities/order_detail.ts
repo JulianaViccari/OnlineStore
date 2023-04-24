@@ -9,6 +9,10 @@ export default class OrderDetail {
         this.quantity = quantity;
     }
 
+    getProductId(): string {
+        return this.product.getId();
+    }
+
     getProductName(): string {
         return this.product.getName();
     }

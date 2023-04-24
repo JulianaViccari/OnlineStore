@@ -2,7 +2,7 @@ import Coupon from "../../src/entities/coupon"
 
 test("should created new Coupon", function () {
     let today = new Date()
-    let coupon = new Coupon("discount10", today, 5, 15);
+    let coupon = new Coupon("discount10", 5, 15, today);
 
     expect(coupon.getName()).toBe("discount10");
     expect(coupon.getValidAt().getDate()).toBe(today.getDate());
