@@ -1,7 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1682284253774" clover="3.2.0">
-  <project timestamp="1682284253774" name="All files">
-    <metrics statements="70" coveredstatements="70" conditionals="5" coveredconditionals="5" methods="35" coveredmethods="35" elements="110" coveredelements="110" complexity="0" loc="70" ncloc="70" packages="2" files="8" classes="8"/>
+<coverage generated="1682892946901" clover="3.2.0">
+  <project timestamp="1682892946901" name="All files">
+    <metrics statements="170" coveredstatements="160" conditionals="29" coveredconditionals="13" methods="80" coveredmethods="70" elements="279" coveredelements="243" complexity="0" loc="170" ncloc="170" packages="4" files="16" classes="16"/>
+    <package name="dist.src">
+      <metrics statements="22" coveredstatements="22" conditionals="8" coveredconditionals="8" methods="6" coveredmethods="6"/>
+      <file name="cpf_validation.js" path="/home/juliana/Workspace/OnlineStore/dist/src/cpf_validation.js">
+        <metrics statements="22" coveredstatements="22" conditionals="8" coveredconditionals="8" methods="6" coveredmethods="6"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="5" count="9" type="stmt"/>
+        <line num="8" count="41" type="stmt"/>
+        <line num="11" count="9" type="stmt"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="15" count="8" type="stmt"/>
+        <line num="16" count="88" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="76" type="stmt"/>
+        <line num="19" count="8" type="stmt"/>
+        <line num="20" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="9" type="stmt"/>
+        <line num="24" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="26" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="28" count="4" type="stmt"/>
+        <line num="29" count="4" type="stmt"/>
+        <line num="30" count="4" type="stmt"/>
+        <line num="31" count="4" type="stmt"/>
+        <line num="32" count="4" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="dist.src.entities">
+      <metrics statements="69" coveredstatements="64" conditionals="8" coveredconditionals="0" methods="34" coveredmethods="29"/>
+      <file name="client.js" path="/home/juliana/Workspace/OnlineStore/dist/src/entities/client.js">
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5"/>
+        <line num="2" count="3" type="stmt"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="7" count="5" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+      </file>
+      <file name="coupon.js" path="/home/juliana/Workspace/OnlineStore/dist/src/entities/coupon.js">
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+      </file>
+      <file name="order.js" path="/home/juliana/Workspace/OnlineStore/dist/src/entities/order.js">
+        <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="6"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="4" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="19" count="7" type="stmt"/>
+        <line num="20" count="7" type="stmt"/>
+        <line num="21" count="15" type="stmt"/>
+        <line num="23" count="7" type="stmt"/>
+        <line num="26" count="2" type="stmt"/>
+      </file>
+      <file name="order_detail.js" path="/home/juliana/Workspace/OnlineStore/dist/src/entities/order_detail.js">
+        <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="4"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="5" count="28" type="stmt"/>
+        <line num="6" count="28" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="18" count="16" type="stmt"/>
+        <line num="21" count="4" type="stmt"/>
+      </file>
+      <file name="payment.js" path="/home/juliana/Workspace/OnlineStore/dist/src/entities/payment.js">
+        <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+      </file>
+      <file name="product.js" path="/home/juliana/Workspace/OnlineStore/dist/src/entities/product.js">
+        <metrics statements="18" coveredstatements="14" conditionals="8" coveredconditionals="0" methods="9" coveredmethods="5"/>
+        <line num="2" count="5" type="stmt"/>
+        <line num="5" count="29" type="stmt"/>
+        <line num="6" count="29" type="stmt"/>
+        <line num="7" count="29" type="stmt"/>
+        <line num="8" count="29" type="stmt"/>
+        <line num="9" count="29" type="stmt"/>
+        <line num="10" count="29" type="stmt"/>
+        <line num="11" count="29" type="stmt"/>
+        <line num="12" count="29" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="18" count="2" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="24" count="18" type="stmt"/>
+        <line num="27" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="30" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="36" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="39" count="5" type="stmt"/>
+      </file>
+      <file name="shipment.js" path="/home/juliana/Workspace/OnlineStore/dist/src/entities/shipment.js">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+      </file>
+    </package>
     <package name="src">
       <metrics statements="17" coveredstatements="17" conditionals="5" coveredconditionals="5" methods="6" coveredmethods="6"/>
       <file name="cpf_validation.ts" path="/home/juliana/Workspace/OnlineStore/src/cpf_validation.ts">
@@ -26,7 +147,7 @@
       </file>
     </package>
     <package name="src.entities">
-      <metrics statements="53" coveredstatements="53" conditionals="0" coveredconditionals="0" methods="29" coveredmethods="29"/>
+      <metrics statements="62" coveredstatements="57" conditionals="8" coveredconditionals="0" methods="34" coveredmethods="29"/>
       <file name="client.ts" path="/home/juliana/Workspace/OnlineStore/src/entities/client.ts">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5"/>
         <line num="3" count="3" type="stmt"/>
@@ -66,13 +187,14 @@
         <line num="33" count="7" type="stmt"/>
       </file>
       <file name="order_detail.ts" path="/home/juliana/Workspace/OnlineStore/src/entities/order_detail.ts">
-        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
-        <line num="3" count="3" type="stmt"/>
-        <line num="8" count="9" type="stmt"/>
-        <line num="9" count="9" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
+        <metrics statements="7" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="4"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="8" count="28" type="stmt"/>
+        <line num="9" count="28" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
-        <line num="21" count="16" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="25" count="16" type="stmt"/>
       </file>
       <file name="payment.ts" path="/home/juliana/Workspace/OnlineStore/src/entities/payment.ts">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
@@ -85,16 +207,24 @@
         <line num="18" count="2" type="stmt"/>
       </file>
       <file name="product.ts" path="/home/juliana/Workspace/OnlineStore/src/entities/product.ts">
-        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="5"/>
-        <line num="1" count="4" type="stmt"/>
-        <line num="8" count="10" type="stmt"/>
-        <line num="9" count="10" type="stmt"/>
-        <line num="10" count="10" type="stmt"/>
-        <line num="11" count="10" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="19" count="2" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="27" count="18" type="stmt"/>
+        <metrics statements="17" coveredstatements="13" conditionals="8" coveredconditionals="0" methods="9" coveredmethods="5"/>
+        <line num="1" count="5" type="stmt"/>
+        <line num="21" count="29" type="stmt"/>
+        <line num="22" count="29" type="stmt"/>
+        <line num="23" count="29" type="stmt"/>
+        <line num="24" count="29" type="stmt"/>
+        <line num="25" count="29" type="stmt"/>
+        <line num="26" count="29" type="stmt"/>
+        <line num="27" count="29" type="stmt"/>
+        <line num="28" count="29" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="44" count="18" type="stmt"/>
+        <line num="48" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="52" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="56" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="60" count="0" type="cond" truecount="0" falsecount="2"/>
       </file>
       <file name="shipment.ts" path="/home/juliana/Workspace/OnlineStore/src/entities/shipment.ts">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>

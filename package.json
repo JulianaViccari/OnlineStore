@@ -12,6 +12,6 @@
     "typescript": "^5.0.4"
   },
   "scripts": {
-    "test": "npm jest --coverage"
+    "test": "jest --coverage"
   }
 }
