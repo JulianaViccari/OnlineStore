@@ -1,13 +1,15 @@
-import { checkout } from "./checkout";
+import Checkout from "./checkout";
+import CouponInMemoryRepository from "./coupon_in_memory_repository";
+import EmailInMemoryRepository from "./email_in_memory_repository";
 import OrderDetail from "./entities/order_detail";
 import Product from "./entities/product";
-const input: { cpf: string, items:OrderDetail[], from: string, to: string } =
-  {
-    cpf: "",
-    items: [],
-    from: "",
-    to: ""
-  };
+import ProductInMemoryRepository from "./product_in_memory_repository";
+const input: { cpf: string; items: OrderDetail[]; from: string; to: string } = {
+  cpf: "",
+  items: [],
+  from: "",
+  to: "",
+};
 
 process.stdin.on("data", function (data) {
   const command = data.toString().replace(/\n/g, "");
@@ -39,7 +41,11 @@ process.stdin.on("data", function (data) {
   }
   if (command.startsWith("checkout")) {
     try {
-      const output = checkout(input);
+        const productsRepository = new ProductInMemoryRepository();
+        const couponsRepository = new CouponInMemoryRepository();
+        const emailGateway = new EmailInMemoryRepository();
+        
+        const output = new Checkout(productsRepository, couponsRepository, emailGateway).execute(input);
       console.log(output);
       return;
     } catch (error: any) {
