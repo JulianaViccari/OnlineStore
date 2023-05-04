@@ -1,11 +1,11 @@
 import { validate } from "./cpf_validation";
 import Product from "./entities/product";
-import Coupon from "./entities/coupon";
 import ProductRepository from "./product_repository_interface";
 import CouponRepository from "./coupon_repository_interface";
 import EmailGateway from "./email_gateway_interface";
 
 type Output = {
+  orderId: string;
   total: number;
   freight: number;
   subtotal: number;
@@ -50,6 +50,7 @@ export default class Checkout {
 
   public async execute(input: any): Promise<Output> {
     const output = {
+      orderId: "",
       subtotal: 0,
       freight: 0,
       total: 0,

@@ -2,34 +2,38 @@ import Client from "./client";
 import OrderDetail from "./order_detail";
 
 export default class Order {
-    private id: string;
-    private client: Client;
-    private productList: Array<OrderDetail>;
+  private id: string;
+  private client?: Client;
+  private orderDetails: Array<OrderDetail>;
 
-    constructor(id: string, client: Client, productList: Array<OrderDetail>
-    ) {
-        this.id = id;
-        this.client = client;
-        this.productList = productList;
-    }
+  constructor(productList: Array<OrderDetail>, client?: Client)
+  {
+    this.id = `${new Date().getFullYear()}${Math.floor(
+      Math.random() * 10000 + 1
+    )
+      .toString()
+      .padStart(8, "0")}`;
+    this.client = client;
+    this.orderDetails = productList;
+  }
 
-    getId(): string {
-        return this.id;
-    }
+  getId(): string {
+    return this.id;
+  }
 
-    getClientCpf(): string {
-        return this.client.getCpf();
-    }
+  getClientCpf(): string {
+    return this.client === undefined ? "null" : this.client.getCpf();
+  }
 
-    getClientAddress(): string {
-        return this.client.getAddress();
-    }
+  getClientAddress(): string {
+    return this.client === undefined ? "null" : this.client.getAddress();
+  }
 
-    getAmount(): number {
-        let total = 0;
-        this.productList.forEach(orderDetail => {
-            total += orderDetail.getProductAmount();
-        })
-        return total;
-    }
+  getAmount(): number {
+    let total = 0;
+    this.orderDetails.forEach((orderDetail) => {
+      total += orderDetail.getProductAmount();
+    });
+    return total;
+  }
 }

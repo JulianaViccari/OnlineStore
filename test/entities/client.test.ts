@@ -1,7 +1,7 @@
 import Client from "../../src/entities/client";
 
 
-test("shold created new Client", function () {
+test("should created new Client", function () {
     let client = new Client(
         "Henrique Viccari",
         "67464608607",

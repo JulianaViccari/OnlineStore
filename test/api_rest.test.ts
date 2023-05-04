@@ -2,6 +2,7 @@ import axios from "axios";
 import Product from "../src/entities/product";
 import OrderDetail from "../src/entities/order_detail";
 
+
 axios.defaults.validateStatus = function (){
     return true;
 };
@@ -142,6 +143,7 @@ test('should make an order with three items with shipment', async function () {
 });
 
 test('should not create order if product\'s dimensions has negative values', async function () {
+    
     let products = [
         new Product("1", "Dove", "shampoo", 17.00),
         new Product("4", "Lux", "sabonete", 2.00),
@@ -162,3 +164,26 @@ test('should not create order if product\'s dimensions has negative values', asy
    expect(output.message).toBe("Invalid dimensions");
 });
 
+test.only('must return a request through the code', async function () {
+    let products = [
+        new Product("1", "Dove", "shampoo", 17.00),
+        new Product("2", "Siege", "shampoo", 48.00),
+        new Product("3", "Dove", "condicionador", 22.00),
+    ];
+    let listOrderDetails = [
+        new OrderDetail(products[0], 2),
+        new OrderDetail(products[1], 1),
+        new OrderDetail(products[2], 3),
+    ];
+    const input = {
+        cpf: "407.302.170-27",
+        items: listOrderDetails,
+        coupon: "discount20",
+    };
+   const response = await axios.post("http://localhost:3000/checkout", input);
+   const orderId = response.data.orderId;
+   const respGetOrder = await axios.get(`http://localhost:3000/${orderId}`);
+   console.log(respGetOrder.data[0]["id"])
+   expect(respGetOrder.status).toBe(200);
+   expect(respGetOrder.data[0]["id"]).toBe(orderId);
+});
