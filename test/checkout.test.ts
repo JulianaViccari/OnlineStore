@@ -1,9 +1,9 @@
 import Product from "../src/entities/product";
 import OrderDetail from "../src/entities/order_detail";
 import Checkout from "../src/checkout";
-import ProductInMemoryRepository from "../src/product_in_memory_repository";
-import CouponInMemoryRepository from "../src/coupon_in_memory_repository";
-import EmailInMemoryRepository from "../src/email_in_memory_repository";
+import ProductInMemoryRepository from "../src/repository/implementations/product_in_memory_repository";
+import CouponInMemoryRepository from "../src/repository/implementations/coupon_in_memory_repository";
+import EmailInMemoryRepository from "../src/repository/implementations/email_in_memory_repository";
 import sinon from "sinon";
 
 let checkout: Checkout;

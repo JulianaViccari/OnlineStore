@@ -1,8 +1,8 @@
 import { validate } from "./cpf_validation";
 import Product from "./entities/product";
-import ProductRepository from "./product_repository_interface";
-import CouponRepository from "./coupon_repository_interface";
-import EmailGateway from "./email_gateway_interface";
+import ProductRepository from "./repository/product_repository_interface";
+import CouponRepository from "./repository/coupon_repository_interface";
+import EmailGateway from "./repository/email_gateway_interface";
 
 type Output = {
   orderId: string;
@@ -19,7 +19,6 @@ function hasDuplicateId(details: Array<any>): boolean {
     });
     return seen.size !== details.length;
   } catch (error) {
-    console.log(error);
     return false;
   }
 }
@@ -41,7 +40,6 @@ function hasNegativeDimensions(product: Product): boolean {
 }
 
 export default class Checkout {
-
   constructor(
     readonly productRepository: ProductRepository,
     readonly couponRepository: CouponRepository,

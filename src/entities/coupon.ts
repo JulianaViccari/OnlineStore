@@ -1,29 +1,29 @@
 export default class Coupon {
-    private name: string;
-    private validAt: Date;
-    private percent: number;
-    private quantity: number;
+  private code: string;
+  private validAt: Date;
+  private percent: number;
+  private quantity: number;
 
-    constructor(name: string, percent: number, quantity: number, validAt: Date,) {
-        this.name = name;
-        this.validAt = validAt;
-        this.percent = percent;
-        this.quantity = quantity;
-    }
+  constructor(name: string, percent: number, quantity: number, validAt: Date) {
+    this.code = name;
+    this.validAt = validAt;
+    this.percent = percent;
+    this.quantity = quantity;
+  }
 
-    getName(): string {
-        return this.name;
-    }
+  getCode(): string {
+    return this.code;
+  }
 
-    getValidAt(): Date {
-        return this.validAt;
-    }
+  getValidAt(): Date {
+    return this.validAt;
+  }
 
-    getPercent(): number {
-        return this.percent;
-    }
+  getPercent(): number {
+    return this.percent;
+  }
 
-    getQuantity(): number {
-        return this.quantity;
-    }
-} 
+  getQuantity(): number {
+    return this.quantity;
+  }
+}

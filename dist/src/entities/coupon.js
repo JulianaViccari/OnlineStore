@@ -2,13 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class Coupon {
     constructor(name, percent, quantity, validAt) {
-        this.name = name;
+        this.code = name;
         this.validAt = validAt;
         this.percent = percent;
         this.quantity = quantity;
     }
-    getName() {
-        return this.name;
+    getCode() {
+        return this.code;
     }
     getValidAt() {
         return this.validAt;

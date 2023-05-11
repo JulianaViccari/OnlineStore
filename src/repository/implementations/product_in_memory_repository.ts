@@ -1,5 +1,7 @@
-import Product from "./entities/product";
-import ProductRepository from "./product_repository_interface";
+import Product from "../../entities/product";
+import ProductRepository from "../product_repository_interface";
+
+
 
 export default class ProductInMemoryRepository implements ProductRepository {
   private productsDB: Product[];

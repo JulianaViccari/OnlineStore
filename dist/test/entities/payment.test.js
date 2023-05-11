@@ -16,7 +16,7 @@ test("should created new Payment", function () {
     let productList = [orderDetail];
     let today = new Date();
     let coupon = new coupon_1.default("discount10", 5, 15, today);
-    let order = new order_1.default("1", client, productList);
+    let order = new order_1.default(productList, client);
     let payment = new payment_1.default("Débito", order, coupon);
     expect(payment.pay()).toBe(34.01);
 });
@@ -31,7 +31,7 @@ test("Should created new order an order with 3 products, associate a discount co
     let orderDetail2 = new order_detail_1.default(product2, 2);
     let orderDetail3 = new order_detail_1.default(product3, 2);
     let productList = [orderDetail1, orderDetail2, orderDetail3];
-    let order = new order_1.default("1", client, productList);
+    let order = new order_1.default(productList, client);
     let payment = new payment_1.default("Débito", order, coupon);
     expect(order.getAmount()).toBe(101.6);
     expect(payment.pay()).toBe(96.52);

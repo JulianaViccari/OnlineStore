@@ -18,22 +18,22 @@ const order_detail_1 = __importDefault(require("../src/entities/order_detail"));
 axios_1.default.defaults.validateStatus = function () {
     return true;
 };
-test('must not create an order with invalid CPF', function () {
+test("must not create an order with invalid CPF", function () {
     return __awaiter(this, void 0, void 0, function* () {
         const input = {
-            cpf: "406.302.107-27"
+            cpf: "406.302.107-27",
         };
         const response = yield axios_1.default.post("http://localhost:3000/checkout", input);
         const output = response.data;
         expect(output.message).toBe("Invalid CPF");
     });
 });
-test('should make an order with three items', function () {
+test("should make an order with three items", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let products = [
-            new product_1.default("1", "Dove", "shampoo", 17.00),
-            new product_1.default("2", "Siege", "shampoo", 48.00),
-            new product_1.default("3", "Dove", "condicionador", 22.00),
+            new product_1.default("1", "Dove", "shampoo", 17.0),
+            new product_1.default("2", "Siege", "shampoo", 48.0),
+            new product_1.default("3", "Dove", "condicionador", 22.0),
         ];
         let listOrderDetails = [
             new order_detail_1.default(products[0], 2),
@@ -42,19 +42,19 @@ test('should make an order with three items', function () {
         ];
         const input = {
             cpf: "407.302.170-27",
-            items: listOrderDetails
+            items: listOrderDetails,
         };
         const response = yield axios_1.default.post("http://localhost:3000/checkout", input);
         const output = response.data;
         expect(output.total).toBe(148);
     });
 });
-test('should make an order with three items with quantity negative', function () {
+test("should make an order with three items with quantity negative", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let products = [
-            new product_1.default("1", "Dove", "shampoo", 17.00),
-            new product_1.default("2", "Siege", "shampoo", 48.00),
-            new product_1.default("3", "Dove", "condicionador", 22.00),
+            new product_1.default("1", "Dove", "shampoo", 17.0),
+            new product_1.default("2", "Siege", "shampoo", 48.0),
+            new product_1.default("3", "Dove", "condicionador", 22.0),
         ];
         let listOrderDetails = [
             new order_detail_1.default(products[0], 2),
@@ -63,19 +63,19 @@ test('should make an order with three items with quantity negative', function ()
         ];
         const input = {
             cpf: "407.302.170-27",
-            items: listOrderDetails
+            items: listOrderDetails,
         };
         const response = yield axios_1.default.post("http://localhost:3000/checkout", input);
         const output = response.data;
         expect(output.message).toBe("Product quantity cannot be negative");
     });
 });
-test('must not repeat item in input', function () {
+test("must not repeat item in input", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let products = [
-            new product_1.default("1", "Dove", "shampoo", 17.00),
-            new product_1.default("2", "Siege", "shampoo", 48.00),
-            new product_1.default("3", "Dove", "condicionador", 22.00),
+            new product_1.default("1", "Dove", "shampoo", 17.0),
+            new product_1.default("2", "Siege", "shampoo", 48.0),
+            new product_1.default("3", "Dove", "condicionador", 22.0),
         ];
         let listOrderDetails = [
             new order_detail_1.default(products[0], 2),
@@ -84,19 +84,19 @@ test('must not repeat item in input', function () {
         ];
         const input = {
             cpf: "407.302.170-27",
-            items: listOrderDetails
+            items: listOrderDetails,
         };
         const response = yield axios_1.default.post("http://localhost:3000/checkout", input);
         const output = response.data;
         expect(output.message).toBe("must not repeat item");
     });
 });
-test('should make an order with three items with coupon', function () {
+test("should make an order with three items with coupon", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let products = [
-            new product_1.default("1", "Dove", "shampoo", 17.00),
-            new product_1.default("2", "Siege", "shampoo", 48.00),
-            new product_1.default("3", "Dove", "condicionador", 22.00),
+            new product_1.default("1", "Dove", "shampoo", 17.0),
+            new product_1.default("2", "Siege", "shampoo", 48.0),
+            new product_1.default("3", "Dove", "condicionador", 22.0),
         ];
         let listOrderDetails = [
             new order_detail_1.default(products[0], 2),
@@ -113,12 +113,12 @@ test('should make an order with three items with coupon', function () {
         expect(output.total).toBe(118.4);
     });
 });
-test('should make an order with three items with coupon invalid', function () {
+test("should make an order with three items with coupon invalid", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let products = [
-            new product_1.default("1", "Dove", "shampoo", 17.00),
-            new product_1.default("2", "Siege", "shampoo", 48.00),
-            new product_1.default("3", "Dove", "condicionador", 22.00),
+            new product_1.default("1", "Dove", "shampoo", 17.0),
+            new product_1.default("2", "Siege", "shampoo", 48.0),
+            new product_1.default("3", "Dove", "condicionador", 22.0),
         ];
         let listOrderDetails = [
             new order_detail_1.default(products[0], 2),
@@ -135,11 +135,11 @@ test('should make an order with three items with coupon invalid', function () {
         expect(output.message).toBe("Coupon invalid");
     });
 });
-test('should make an order with three items with shipment', function () {
+test("should make an order with two items with shipment", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let products = [
-            new product_1.default("1", "Dove", "shampoo", 17.00),
-            new product_1.default("2", "Siege", "shampoo", 48.00),
+            new product_1.default("1", "Dove", "shampoo", 17.0),
+            new product_1.default("2", "Siege", "shampoo", 48.0),
         ];
         let listOrderDetails = [
             new order_detail_1.default(products[0], 2),
@@ -158,11 +158,11 @@ test('should make an order with three items with shipment', function () {
         expect(output.total).toBe(6092);
     });
 });
-test('should not create order if product\'s dimensions has negative values', function () {
+test("should not create order if product's dimensions has negative values", function () {
     return __awaiter(this, void 0, void 0, function* () {
         let products = [
-            new product_1.default("1", "Dove", "shampoo", 17.00),
-            new product_1.default("4", "Lux", "sabonete", 2.00),
+            new product_1.default("1", "Dove", "shampoo", 17.0),
+            new product_1.default("4", "Lux", "sabonete", 2.0),
         ];
         let listOrderDetails = [
             new order_detail_1.default(products[0], 2),
@@ -177,6 +177,29 @@ test('should not create order if product\'s dimensions has negative values', fun
         const response = yield axios_1.default.post("http://localhost:3000/checkout", input);
         const output = response.data;
         expect(output.message).toBe("Invalid dimensions");
+    });
+});
+test("must return a request through the code", function () {
+    return __awaiter(this, void 0, void 0, function* () {
+        let products = [
+            new product_1.default("1", "Dove", "shampoo", 17.0),
+            new product_1.default("2", "Siege", "shampoo", 48.0),
+            new product_1.default("3", "Dove", "condicionador", 22.0),
+        ];
+        let listOrderDetails = [
+            new order_detail_1.default(products[0], 2),
+            new order_detail_1.default(products[1], 1),
+            new order_detail_1.default(products[2], 3),
+        ];
+        const input = {
+            cpf: "407.302.170-27",
+            items: listOrderDetails,
+        };
+        const response = yield axios_1.default.post("http://localhost:3000/checkout", input);
+        const orderId = response.data.orderId;
+        const respGetOrder = yield axios_1.default.get(`http://localhost:3000/${orderId}`);
+        expect(respGetOrder.status).toBe(200);
+        expect(respGetOrder.data["id"]).toBe(orderId);
     });
 });
 //# sourceMappingURL=api_rest.test.js.map

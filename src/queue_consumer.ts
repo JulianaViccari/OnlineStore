@@ -1,8 +1,8 @@
 import { connect } from "amqplib";
 import Checkout from "./checkout";
-import ProductInMemoryRepository from "./product_in_memory_repository";
-import CouponInMemoryRepository from "./coupon_in_memory_repository";
-import EmailInMemoryRepository from "./email_in_memory_repository";
+import CouponInMemoryRepository from "./repository/implementations/coupon_in_memory_repository";
+import EmailInMemoryRepository from "./repository/implementations/email_in_memory_repository";
+import ProductInMemoryRepository from "./repository/implementations/product_in_memory_repository";
 
 async function main() {
   const connection = await connect("amqp://localhost");

@@ -1,5 +1,5 @@
-import CouponRepository from "./coupon_repository_interface";
-import Coupon from "./entities/coupon";
+import CouponRepository from "../coupon_repository_interface";
+import Coupon from "../../entities/coupon";
 
 export default class CouponInMemoryRepository implements CouponRepository {
   private couponsDB: Coupon[];
@@ -13,6 +13,6 @@ export default class CouponInMemoryRepository implements CouponRepository {
   }
 
   async get(code: string): Promise<Coupon> {
-    return this.couponsDB.filter((c) => c.getName() === code)[0];
+    return this.couponsDB.filter((c) => c.getCode() === code)[0];
   }
 }

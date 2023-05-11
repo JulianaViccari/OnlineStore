@@ -6,13 +6,8 @@ export default class Order {
   private client?: Client;
   private orderDetails: Array<OrderDetail>;
 
-  constructor(productList: Array<OrderDetail>, client?: Client)
-  {
-    this.id = `${new Date().getFullYear()}${Math.floor(
-      Math.random() * 10000 + 1
-    )
-      .toString()
-      .padStart(8, "0")}`;
+  constructor(id: string, productList: Array<OrderDetail>, client?: Client) {
+    this.id = id;
     this.client = client;
     this.orderDetails = productList;
   }
@@ -35,5 +30,13 @@ export default class Order {
       total += orderDetail.getProductAmount();
     });
     return total;
+  }
+
+  generateId(): void {
+    this.id = `${new Date().getFullYear()}${Math.floor(
+      Math.random() * 10000 + 1
+    )
+      .toString()
+      .padStart(8, "0")}`;
   }
 }

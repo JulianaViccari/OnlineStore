@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = __importDefault(require("../../src/entities/client"));
-test("shold created new Client", function () {
+test("should created new Client", function () {
     let client = new client_1.default("Henrique Viccari", "67464608607", "h.v@gmail.com", "rua 1, 55, bairro Felidz, cep: 14620-000, orlândia-Sp");
     expect(client.getName()).toBe("Henrique Viccari");
     expect(client.getAddress()).toBe("rua 1, 55, bairro Felidz, cep: 14620-000, orlândia-Sp");

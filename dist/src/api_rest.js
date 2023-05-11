@@ -13,115 +13,52 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const cpf_validation_1 = require("./cpf_validation");
-const product_1 = __importDefault(require("./entities/product"));
-const coupon_1 = __importDefault(require("./entities/coupon"));
+const checkout_1 = __importDefault(require("./checkout"));
+const product_in_memory_repository_1 = __importDefault(require("./repository/implementations/product_in_memory_repository"));
+const coupon_in_memory_repository_1 = __importDefault(require("./repository/implementations/coupon_in_memory_repository"));
+const email_in_memory_repository_1 = __importDefault(require("./repository/implementations/email_in_memory_repository"));
+const order_1 = __importDefault(require("./entities/order"));
+const order_mysql_repository_1 = __importDefault(require("./repository/implementations/order_mysql_repository"));
+const client_1 = __importDefault(require("./entities/client"));
 const app = (0, express_1.default)();
-const productsDB = [
-    new product_1.default("1", "Dove", "shampoo", 17.00, 8, 20, 20, 300),
-    new product_1.default("2", "Siege", "shampoo", 48.00, 8, 20, 20, 1),
-    new product_1.default("3", "Dove", "condicionador", 22.00, 8, 20, 20, 300),
-    new product_1.default("4", "Lux", "sabonete", 2.00, 8, 20, 20, -3),
-];
-const couponsDB = [
-    new coupon_1.default("discount10", 10, 15, new Date(2023, 3, 24, 23, 47, 0, 0)),
-    new coupon_1.default("discount20", 20, 15, new Date(2023, 6, 24, 23, 47, 0, 0)),
-    new coupon_1.default("discount5", 5, 15, new Date(2023, 0, 24, 23, 47, 0, 0))
-];
-function getProductById(products, id) {
-    return products.filter(p => p.getId() === id)[0];
-}
-;
-function getCouponByName(coupons, name) {
-    return coupons.filter(c => c.getName() === name)[0];
-}
-;
-function hasDuplicateId(details) {
-    try {
-        let seen = new Set();
-        details.forEach(detail => {
-            seen.add(detail.product.id);
-        });
-        return seen.size !== details.length;
-    }
-    catch (error) {
-        console.log(error);
-        return false;
-    }
-}
-function calculateFreight(product) {
-    const volume = product.width / 100 * product.height / 100 * product.length / 100;
-    const density = product.weight / volume;
-    return volume * 1000 * (density / 100);
-}
-function hasNegativeDimensions(product) {
-    return product.getHeight() < 0
-        || product.getLength() < 0
-        || product.getWeight() < 0
-        || product.getWidth() < 0;
-}
 app.use(express_1.default.json());
+// const orders: Array<Order> = [];
+// function getOrderById(orderId: string): Array<Order> {
+//   return orders.filter((o) => o.getId() === orderId);
+// }
+// function getOrder(): Array<Order> {
+//   return orders;
+// }
 app.post("/checkout", function (req, resp) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            if ((0, cpf_validation_1.validate)(req.body.cpf)) {
-                const connectionProducts = productsDB;
-                const output = {
-                    total: 0,
-                    freight: 0,
-                    subtotal: 0,
-                };
-                if (req.body.items) {
-                    if (hasDuplicateId(req.body.items))
-                        throw new Error("must not repeat item");
-                    for (const item of req.body.items) {
-                        let product = getProductById(connectionProducts, item.product.id);
-                        if (hasNegativeDimensions(product))
-                            throw new Error("Invalid dimensions");
-                        if (item.quantity <= 0)
-                            throw new Error("Product quantity cannot be negative");
-                        if (product !== undefined) {
-                            output.subtotal += product.getPrice() * item.quantity;
-                        }
-                        if (req.body.from && req.body.to) {
-                            const freight = calculateFreight(product);
-                            output.freight += Math.max(10, freight) * item.quantity;
-                        }
-                    }
-                    ;
-                }
-                ;
-                output.total = output.subtotal;
-                if (req.body.coupon) {
-                    const connectionCoupon = couponsDB;
-                    let coupon = getCouponByName(connectionCoupon, req.body.coupon);
-                    if (coupon !== undefined && (new Date().getTime() <= coupon.getValidAt().getTime())) {
-                        const couponPercent = coupon.getPercent();
-                        output.total -= (output.total * couponPercent) / 100;
-                    }
-                    else {
-                        resp.json({
-                            message: "Coupon invalid"
-                        });
-                        return;
-                    }
-                    ;
-                }
-                ;
-                output.total += output.freight;
-                resp.json(output);
-            }
-            else {
-                resp.json({
-                    message: "Invalid CPF"
-                });
-            }
+            const productsRepository = new product_in_memory_repository_1.default();
+            const couponsRepository = new coupon_in_memory_repository_1.default();
+            const emailGateway = new email_in_memory_repository_1.default();
+            const orderRepository = new order_mysql_repository_1.default();
+            let output = yield new checkout_1.default(productsRepository, couponsRepository, emailGateway).execute(req.body);
+            const order = new order_1.default(req.body.items, new client_1.default("", req.body.cpf, "", ""));
+            yield orderRepository.create(order);
+            output.orderId = order.getId();
+            resp.json(output);
         }
         catch (error) {
             resp.status(422).json({
-                message: error.message
+                message: error.message,
             });
         }
+    });
+});
+app.get("/:orderId", function (req, resp) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const order = yield new order_mysql_repository_1.default().getById(req.params["orderId"]);
+        resp.send(order);
+    });
+});
+app.get("/", function (req, resp) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const orders = yield new order_mysql_repository_1.default().getAll();
+        resp.send(orders);
     });
 });
 app.listen(3000);
