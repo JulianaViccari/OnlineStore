@@ -32,6 +32,7 @@ test("should make an order with three items", async function () {
   };
   const response = await axios.post("http://localhost:3000/checkout", input);
   const output = response.data;
+  console.log(output.total);
   expect(output.total).toBe(148);
 });
 

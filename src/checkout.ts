@@ -73,6 +73,7 @@ export default class Checkout {
             }
           }
         }
+      
         output.total = output.subtotal;
         if (input.coupon) {
           const coupon = await this.couponRepository.get(input.coupon);

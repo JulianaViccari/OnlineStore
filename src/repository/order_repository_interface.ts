@@ -1,7 +1,7 @@
-import Order from "../entities/order";
+import OrderDTO from "../dtos/order_dto";
 
 export default interface OrderRepository {
-  create(order: Order): Promise<void>;
-  getById(orderId: string): Promise<Order | undefined>;
-  getAll(): Promise<Array<Order> | undefined>;
+  create(order: OrderDTO): Promise<void>;
+  getById(orderId: string): Promise<OrderDTO | undefined>;
+  getAll(): Promise<Array<OrderDTO> | undefined>;
 }

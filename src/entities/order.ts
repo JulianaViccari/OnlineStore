@@ -6,14 +6,18 @@ export default class Order {
   private client?: Client;
   private orderDetails: Array<OrderDetail>;
 
-  constructor(id: string, productList: Array<OrderDetail>, client?: Client) {
+  constructor(id: string, orderDetails: Array<OrderDetail>, client?: Client) {
     this.id = id;
     this.client = client;
-    this.orderDetails = productList;
+    this.orderDetails = orderDetails;
   }
 
   getId(): string {
     return this.id;
+  }
+
+  getClient(): Client | undefined {
+    return this.client === undefined ? undefined : this.client;
   }
 
   getClientCpf(): string {
@@ -38,5 +42,9 @@ export default class Order {
     )
       .toString()
       .padStart(8, "0")}`;
+  }
+
+  getDetails(): Array<OrderDetail> {
+    return this.orderDetails;
   }
 }

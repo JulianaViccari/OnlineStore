@@ -1,30 +1,42 @@
 import mysql from "mysql2";
-import Order from "../../entities/order";
 import OrderRepository from "../order_repository_interface";
-import Client from "../../entities/client";
-import OrderDetail from "../../entities/order_detail";
+import OrderDTO from "../../dtos/order_dto";
+import OrderDetailDTO from "../../dtos/order_detail_dto";
+import ClientDTO from "../../dtos/client_dto";
 
 export default class OrderMysqlRepository implements OrderRepository {
   private conn?: mysql.Connection;
 
-  public async create(order: Order): Promise<void> {
+  public async create(order: OrderDTO): Promise<void> {
+    if (order === undefined) return undefined;
     try {
       this.conn = this.openConnection();
-      const query =
+      const createOrderSQL =
         "insert into orders (id, client_cpf, status) values(?, ?, ?)";
-      return new Promise((resolve, reject) => {
-        this.conn?.query(
-          query,
-          [order.getId(), order.getClientCpf(), "created"],
-          (error, _) => {
-            if (error) {
-              return reject(error);
-            } else {
-              resolve();
-            }
-          }
-        );
-      });
+      const createOrderParameters = [order.id, order.client?.cpf, "created"];
+      await this.execInsertStatement(
+        createOrderSQL,
+        createOrderParameters,
+        this.conn
+      );
+
+      if (order.orderDetails && order.orderDetails.length > 0) {
+        const createDetailSQL =
+          "insert into order_details (order_id, product_id, quantity) values(?, ?, ?)";
+
+        for (const detail of order.orderDetails) {
+          const createDetailParameters = [
+            order.id,
+            detail.product?.id,
+            detail.quantity,
+          ];
+          await this.execInsertStatement(
+            createDetailSQL,
+            createDetailParameters,
+            this.conn
+          );
+        }
+      }
     } catch (error: any) {
       throw new Error(error.message);
     } finally {
@@ -32,7 +44,7 @@ export default class OrderMysqlRepository implements OrderRepository {
     }
   }
 
-  public async getById(orderId: string): Promise<Order | undefined> {
+  public async getById(orderId: string): Promise<OrderDTO | undefined> {
     try {
       this.conn = this.openConnection();
       const query = "select id, client_cpf, status from orders where id = ?";
@@ -53,7 +65,7 @@ export default class OrderMysqlRepository implements OrderRepository {
     }
   }
 
-  public async getAll(): Promise<Order[] | undefined> {
+  public async getAll(): Promise<OrderDTO[] | undefined> {
     try {
       this.conn = this.openConnection();
       const query = "select id, client_cpf, status from orders";
@@ -92,32 +104,56 @@ export default class OrderMysqlRepository implements OrderRepository {
     this.conn?.end();
   }
 
-  private bindOne(databaseResult: Array<any>): Order | undefined {
-    if (!databaseResult || databaseResult === undefined) return undefined;
-    const { id, client_cpf } = databaseResult[0];
-    return new Order(
-      id,
-      Array<OrderDetail>(),
-      new Client("", client_cpf, "", "")
-    );
-  }
-
-  private bindMany(databaseResult: Array<any>): Array<Order> | undefined {
+  private bindOne(databaseResult: Array<any>): OrderDTO | undefined {
     if (
       !databaseResult ||
       databaseResult === undefined ||
       databaseResult.length === 0
     )
       return undefined;
+    const { id, client_cpf } = databaseResult[0];
+    return new OrderDTO(
+      id,
+      Array<OrderDetailDTO>(),
+      new ClientDTO("", client_cpf, "", "")
+    );
+  }
 
-    const result: Array<Order> = [];
+  private bindMany(databaseResult: Array<any>): Array<OrderDTO> | undefined {
+    if (this.isEmptyResultSet(databaseResult)) return undefined;
+
+    const result: Array<OrderDTO> = [];
     for (const result of databaseResult) {
       const { id, client_cpf } = databaseResult[0];
       result.push(
-        new Order(id, Array<OrderDetail>(), new Client("", client_cpf, "", ""))
+        new OrderDTO(
+          id,
+          Array<OrderDetailDTO>(),
+          new ClientDTO("", client_cpf, "", "")
+        )
       );
     }
 
     return result;
+  }
+
+  private async execInsertStatement(
+    query: string,
+    parameterValues: Array<any>,
+    conn: mysql.Connection
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      conn.query(query, parameterValues, (error, result) => {
+        if (error) {
+          return reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
+  private isEmptyResultSet(resultSet: Array<any>): boolean {
+    return !resultSet || resultSet === undefined || resultSet.length === 0;
   }
 }

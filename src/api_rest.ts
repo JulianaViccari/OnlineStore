@@ -6,19 +6,22 @@ import EmailInMemoryRepository from "./repository/implementations/email_in_memor
 import Order from "./entities/order";
 import OrderMysqlRepository from "./repository/implementations/order_mysql_repository";
 import Client from "./entities/client";
+import OrderDetail from "./entities/order_detail";
+import Product from "./entities/product";
+import OrderFactory from "./factories/order_factory";
 const app = express();
 
 app.use(express.json());
 
-// const orders: Array<Order> = [];
-
-// function getOrderById(orderId: string): Array<Order> {
-//   return orders.filter((o) => o.getId() === orderId);
-// }
-
-// function getOrder(): Array<Order> {
-//   return orders;
-// }
+function buildDetails(inputList: Array<any>): Array<OrderDetail> {
+  const orderDetails: Array<OrderDetail> = [];
+  inputList.forEach((input) => {
+    orderDetails.push(
+      new OrderDetail(new Product(input.product.id, "", "", 0), input.quantity)
+    );
+  });
+  return orderDetails;
+}
 
 app.post("/checkout", async function (req: Request, resp: Response) {
   try {
@@ -34,12 +37,12 @@ app.post("/checkout", async function (req: Request, resp: Response) {
     ).execute(req.body);
     const order = new Order(
       "",
-      req.body.items,
+      buildDetails(req.body.items),
       new Client("", req.body.cpf, "", "")
     );
     order.generateId();
-    
-    await orderRepository.create(order);
+    const orderDTO = OrderFactory.buildOrderDTO(order);
+    await orderRepository.create(orderDTO);
     output.orderId = order.getId();
     resp.json(output);
   } catch (error: any) {
