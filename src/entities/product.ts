@@ -1,23 +1,16 @@
 export default class Product {
-  private id: string;
-  private name: string;
-  private description: string;
-  private price: number;
-  private width?: number;
-  private height?: number;
-  private length?: number;
-  private weight?: number;
-
   constructor(
-    id: string,
-    name: string,
-    description: string,
-    price: number,
-    width?: number,
-    height?: number,
-    length?: number,
-    weight?: number
+    readonly id: string,
+    readonly name: string,
+    readonly description: string,
+    readonly price: number,
+    readonly width: number,
+    readonly height: number,
+    readonly length: number,
+    readonly weight: number
   ) {
+    if ( this.getHeight() < 0 ||this.getLength() < 0 ||this.getWidth() < 0) throw new Error("Invalid dimensions")
+    if (this.getWeight() < 0) throw new Error("Invalid weight")
     this.id = id;
     this.name = name;
     this.description = description;
@@ -58,5 +51,22 @@ export default class Product {
 
   getWeight(): number {
     return this.weight === undefined ? 0 : this.weight;
+  }
+
+  getVolume(): number {
+    return ((((this.width / 100) * this.height) / 100) * this.length) / 100;
+  }
+
+  getDensity() {
+    return this.weight / this.getVolume();
+  }
+
+  hasNegativeDimensions(): boolean {
+    return (
+      this.getHeight() < 0 ||
+      this.getLength() < 0 ||
+      this.getWeight() < 0 ||
+      this.getWidth() < 0
+    );
   }
 }

@@ -1,107 +1,59 @@
-import { validate } from "./cpf_validation";
-import Product from "./entities/product";
 import ProductRepository from "./repository/product_repository_interface";
 import CouponRepository from "./repository/coupon_repository_interface";
-import EmailGateway from "./repository/email_gateway_interface";
+import Order from "./entities/order";
+import OrderRepository from "./repository/order_repository_interface";
+import Client from "./entities/client";
+import SimulateFreight from "./simulate_freight";
+import OrderDetail from "./entities/order_detail";
+import OrderFactory from "./factories/order_factory";
 
 type Output = {
-  orderId: string;
   total: number;
   freight: number;
   subtotal: number;
 };
 
-function hasDuplicateId(details: Array<any>): boolean {
-  try {
-    let seen = new Set();
-    details.forEach((detail) => {
-      seen.add(detail.product.id);
-    });
-    return seen.size !== details.length;
-  } catch (error) {
-    return false;
-  }
-}
-
-function calculateFreight(product: any): number {
-  const volume =
-    ((((product.width / 100) * product.height) / 100) * product.length) / 100;
-  const density = product.weight / volume;
-  return volume * 1000 * (density / 100);
-}
-
-function hasNegativeDimensions(product: Product): boolean {
-  return (
-    product.getHeight() < 0 ||
-    product.getLength() < 0 ||
-    product.getWeight() < 0 ||
-    product.getWidth() < 0
-  );
-}
-
 export default class Checkout {
   constructor(
     readonly productRepository: ProductRepository,
     readonly couponRepository: CouponRepository,
-    readonly emailGateway: EmailGateway
+    readonly orderRepository: OrderRepository
   ) {}
-
   public async execute(input: any): Promise<Output> {
     const output = {
-      orderId: "",
       subtotal: 0,
       freight: 0,
       total: 0,
     };
-    try {
-      if (validate(input.cpf)) {
-        if (input.items) {
-          if (hasDuplicateId(input.items))
-            throw new Error("must not repeat item");
-          for (const item of input.items) {
-            let product = await this.productRepository.get(item.product.id);
-            if (hasNegativeDimensions(product))
-              throw new Error("Invalid dimensions");
-            if (item.quantity <= 0)
-              throw new Error("Product quantity cannot be negative");
-            if (product !== undefined) {
-              output.subtotal += product.getPrice() * item.quantity;
-            }
-            if (input.from && input.to) {
-              const freight = calculateFreight(product);
-              output.freight += Math.max(10, freight) * item.quantity;
-            }
-          }
-        }
-      
-        output.total = output.subtotal;
-        if (input.coupon) {
-          const coupon = await this.couponRepository.get(input.coupon);
-          if (
-            coupon !== undefined &&
-            new Date().getTime() <= coupon.getValidAt().getTime()
-          ) {
-            const couponPercent = coupon.getPercent();
-            output.total -= (output.total * couponPercent) / 100;
-          } else {
-            throw new Error("Coupon invalid");
-          }
-        }
-        output.total += output.freight;
-        if (input.email) {
-          await this.emailGateway.send(
-            "Purchase Sucess",
-            "...",
-            input.email,
-            "test@gmail.com"
-          );
-        }
-        return output;
-      } else {
-        throw new Error("Invalid CPF");
+    const sequence = await this.orderRepository.count();
+    const client = new Client("", input.cpf, "", "");
+    const order = new Order(input.idOrder, client, input.date, sequence + 1);
+    
+    for (const item of input.items) {
+      let product = await this.productRepository.get(item.product.id);
+      const orderDetail = new OrderDetail(product, item.quantity)
+      order.addItem(orderDetail);
+      // console.log(input.from)
+      if (input.from && input.to) {
+        output.freight += SimulateFreight.calculate(product) * item.quantity;
       }
-    } catch (error: any) {
-      throw new Error(error.message);
     }
+
+    output.subtotal = order.getAmount();
+    output.total = output.subtotal;
+    if (input.coupon) {
+      const coupon = await this.couponRepository.get(input.coupon);
+      if(!coupon)throw new Error("Coupon invalid");
+
+      if (coupon.isValid()) {
+        output.total -= coupon.calculateDiscount(output.total);
+      }
+    }
+    output.total += output.freight;
+
+    const orderDTO = OrderFactory.buildOrderDTO(order);
+    await this.orderRepository.create(orderDTO);
+
+    return output;
   }
 }

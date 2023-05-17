@@ -12,7 +12,7 @@ export default class CouponInMemoryRepository implements CouponRepository {
     ];
   }
 
-  async get(code: string): Promise<Coupon> {
+  async get(code: string): Promise<Coupon | undefined> {
     return this.couponsDB.filter((c) => c.getCode() === code)[0];
   }
 }

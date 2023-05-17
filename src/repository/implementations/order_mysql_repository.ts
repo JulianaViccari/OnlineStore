@@ -7,6 +7,28 @@ import ClientDTO from "../../dtos/client_dto";
 export default class OrderMysqlRepository implements OrderRepository {
   private conn?: mysql.Connection;
 
+  public async count(): Promise<number> {
+    try {
+    this.conn = this.openConnection();
+      const query = "select count(1) as orders_count from orders";
+
+      return new Promise((resolve, reject) => {
+        this.conn?.query(query, (error: any, results: any) => {
+          if (error) {
+            return reject(error);
+          } else {
+            return resolve(this.bindCount(results));
+          }
+        });
+      });
+    } catch (error: any) {
+      throw new Error(error.message);
+    } finally {
+      await this.closeConnection();
+    }
+  }
+  
+
   public async create(order: OrderDTO): Promise<void> {
     if (order === undefined) return undefined;
     try {
@@ -117,6 +139,11 @@ export default class OrderMysqlRepository implements OrderRepository {
       Array<OrderDetailDTO>(),
       new ClientDTO("", client_cpf, "", "")
     );
+  }
+
+  private bindCount(databaseResult: Array<any>): number {
+    const { orders_count } = databaseResult[0]
+    return orders_count;
   }
 
   private bindMany(databaseResult: Array<any>): Array<OrderDTO> | undefined {

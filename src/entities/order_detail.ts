@@ -5,6 +5,7 @@ export default class OrderDetail {
   private quantity: number;
 
   constructor(product: Product, quantity: number) {
+    if(quantity <= 0)throw new Error("Product quantity cannot be negative");
     this.product = product;
     this.quantity = quantity;
   }

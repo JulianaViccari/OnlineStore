@@ -6,17 +6,20 @@ export default class OrderDTO {
   client?: ClientDTO;
   orderDetails?: Array<OrderDetailDTO>;
   amount?: number;
+  code?: string
 
   constructor(
     id?: string,
     orderDetails?: Array<OrderDetailDTO>,
     client?: ClientDTO,
-    amount?: number
+    amount?: number,
+    code?: string
   ) {
     this.id = id;
     this.client = client;
     this.orderDetails = orderDetails;
     this.amount = amount;
+    this.code = code
   }
 
 }

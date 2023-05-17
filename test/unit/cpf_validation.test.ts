@@ -1,4 +1,4 @@
-import { validate } from "../src/cpf_validation";
+import { validate } from "../../src/cpf_validation";
 
 
 test.each([
