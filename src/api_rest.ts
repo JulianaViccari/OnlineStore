@@ -9,6 +9,7 @@ import Product from "./entities/product";
 import OrderFactory from "./factories/order_factory";
 import CouponInMemoryRepository from "./repository/implementations/coupon_in_memory_repository";
 import SimulateFreight from "./simulate_freight";
+import GetOrder from "./get_order";
 const app = express();
 
 app.use(express.json());
@@ -31,8 +32,9 @@ app.post("/checkout", async function (req: Request, resp: Response) {
     });
   }
 });
+
 app.get("/:orderId", async function (req: Request, resp: Response) {
-  const order = await new OrderMysqlRepository().getById(req.params["orderId"]);
+  const order = await new GetOrder().execute(req.params["orderId"]);
   resp.send(order);
 });
 

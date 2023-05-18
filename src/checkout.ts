@@ -10,18 +10,16 @@ import OrderFactory from "./factories/order_factory";
 type Output = {
   total: number;
   freight: number;
-  subtotal: number;
 };
 
 export default class Checkout {
   constructor(
     readonly productRepository: ProductRepository,
-    readonly couponRepository: CouponRepository,
+    readonly couponRepository: CouponRepository, 
     readonly orderRepository: OrderRepository
   ) {}
   public async execute(input: any): Promise<Output> {
     const output = {
-      subtotal: 0,
       freight: 0,
       total: 0,
     };
@@ -33,24 +31,19 @@ export default class Checkout {
       let product = await this.productRepository.get(item.product.id);
       const orderDetail = new OrderDetail(product, item.quantity)
       order.addItem(orderDetail);
-      // console.log(input.from)
       if (input.from && input.to) {
         output.freight += SimulateFreight.calculate(product) * item.quantity;
       }
     }
-
-    output.subtotal = order.getAmount();
-    output.total = output.subtotal;
     if (input.coupon) {
       const coupon = await this.couponRepository.get(input.coupon);
       if(!coupon)throw new Error("Coupon invalid");
-
-      if (coupon.isValid()) {
-        output.total -= coupon.calculateDiscount(output.total);
-      }
+      
+      order.addCoupon(coupon);
     }
-    output.total += output.freight;
 
+    output.total = order.getAmount();
+    output.total += output.freight;
     const orderDTO = OrderFactory.buildOrderDTO(order);
     await this.orderRepository.create(orderDTO);
 

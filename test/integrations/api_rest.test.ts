@@ -115,7 +115,6 @@ test("should make an order with two items with shipment", async function () {
   const response = await axios.post("http://localhost:3000/checkout", input);
   const output = response.data;
   expect(output.freight).toBe(6010);
-  expect(output.subtotal).toBe(82);
   expect(output.total).toBe(6092);
 });
 

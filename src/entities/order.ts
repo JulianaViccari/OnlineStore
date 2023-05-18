@@ -1,15 +1,17 @@
 import Client from "./client";
+import Coupon from "./coupon";
 import OrderDetail from "./order_detail";
 
 export default class Order {
   code: string;
   orderDetails: Array<OrderDetail>;
+  coupon?: Coupon
 
   constructor(
-    readonly id: string | undefined,
+    readonly id: string,
     readonly client: Client,
-    date: Date = new Date(),
-    sequence: number = 1
+    readonly date: Date = new Date(),
+    readonly sequence: number = 1
   ) {
     this.id = id;
     this.code = `${date.getFullYear()}${new String(sequence).padStart(8, "0")}`;
@@ -17,7 +19,7 @@ export default class Order {
     this.orderDetails = [];
   }
 
-  getId(): string | undefined {
+  getId(): string {
     return this.id;
   }
 
@@ -42,6 +44,10 @@ export default class Order {
     this.orderDetails.forEach((orderDetail) => {
       total += orderDetail.getProductAmount();
     });
+
+    if(this.coupon){
+      total -= this.coupon.calculateDiscount(total);
+    }
     return total;
   }
 
@@ -53,6 +59,10 @@ export default class Order {
     )
       throw new Error("must not repeat item");
     this.orderDetails.push(orderDetail);
+  }
+
+  addCoupon(coupon: Coupon){
+    if (coupon.isValid()) this.coupon = coupon;
   }
 
   getDetails(): Array<OrderDetail> {

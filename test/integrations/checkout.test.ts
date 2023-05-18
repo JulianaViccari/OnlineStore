@@ -4,9 +4,13 @@ import Checkout from "../../src/checkout";
 import ProductInMemoryRepository from "../../src/repository/implementations/product_in_memory_repository";
 import CouponInMemoryRepository from "../../src/repository/implementations/coupon_in_memory_repository";
 import OrderMysqlRepository from "../../src/repository/implementations/order_mysql_repository";
-
+import GetOrder from "../../src/get_order";
+import crypto from "crypto";
+import sinon from "sinon";
+import OrderDTO from "../../src/dtos/order_dto";
 
 let checkout: Checkout;
+let getOrder: GetOrder;
 
 beforeEach(() => {
   const productsRepository = new ProductInMemoryRepository();
@@ -18,6 +22,7 @@ beforeEach(() => {
     couponRepository,
     orderRepository
   );
+  getOrder = new GetOrder(orderRepository);
 });
 
 test("must not create an order with invalid CPF", async function () {
@@ -29,6 +34,30 @@ test("must not create an order with invalid CPF", async function () {
   expect(() => checkout.execute(input)).rejects.toThrow(
     new Error("Invalid cpf")
   );
+});
+
+test("Must place an order with 3 items and get the order saved", async function () {
+  const idOrder = crypto.randomUUID();
+  let products = [
+    new Product("1", "Dove", "shampoo", 17.0, 0, 0, 0, 0),
+    new Product("2", "Siege", "shampoo", 48.0, 0, 0, 0, 0),
+    new Product("3", "Dove", "condicionador", 22.0, 0, 0, 0, 0),
+  ];
+  let listOrderDetails = [
+    new OrderDetail(products[0], 2),
+    new OrderDetail(products[1], 1),
+    new OrderDetail(products[2], 3),
+  ];
+  const input = {
+    cpf: "407.302.170-27",
+    items: listOrderDetails,
+  };
+  const output = await checkout.execute(input);
+  const orderMysqlRepositoryStub = sinon.stub(OrderMysqlRepository.prototype, "getById")
+  .resolves(new OrderDTO(idOrder,undefined,undefined, output.total, undefined));
+  const orderDTO = await getOrder.execute(idOrder);
+  expect(orderDTO?.amount).toBe(148);
+  orderMysqlRepositoryStub.restore();
 });
 
 test("must create an order", async function () {
@@ -102,6 +131,5 @@ test("should make an order with two items with shipment", async function () {
   };
   const output = await checkout.execute(input);
   expect(output.freight).toBe(6010);
-  expect(output.subtotal).toBe(82);
   expect(output.total).toBe(6092);
 });

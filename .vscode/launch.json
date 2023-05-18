@@ -9,7 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/dist/src/api_rest.js",
+      "program": "${workspaceFolder}/dist/src/checkout.js",
       "outFiles": ["${workspaceFolder}/**/*.js"]
     }
   ]
