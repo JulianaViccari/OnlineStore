@@ -3,8 +3,6 @@ import DatabaseRepositoryFactory from "./factories/database_repository_factory";
 import MySQLAdapter from "./repository/implementations/msql_adapters";
 import ExpressAdapter from "./express_adapter";
 import HttpController from "./http_controller";
-import GetOrder from "./get_order";
-import GetProducts from "./get_products";
 import UsecaseFactory from "./factories/usecase_factory";
 //boundary
 const connection = new MySQLAdapter();

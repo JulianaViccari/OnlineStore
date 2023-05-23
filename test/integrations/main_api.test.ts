@@ -1,6 +1,7 @@
 import axios from "axios";
 import Product from "../../src/entities/product";
 import OrderDetail from "../../src/entities/order_detail";
+import { application } from "expressc";
 
 axios.defaults.validateStatus = function () {
   return true;
@@ -135,15 +136,36 @@ test("must return a request through the code", async function () {
   };
   const response = await axios.post("http://localhost:3000/checkout", input);
   const orderId = response.data.orderId;
-  const respGetOrder = await axios.get(`http://localhost:3000/orders/${orderId}`);
+  const respGetOrder = await axios.get(
+    `http://localhost:3000/orders/${orderId}`
+  );
   expect(respGetOrder.status).toBe(200);
   expect(respGetOrder.data["id"]).toBe(orderId);
 });
 
-test("should list products", async function () {
-  const response = await axios.get("http://localhost:3000/products");
-  // console.log(response)
+test("should list products em json ", async function () {
+  const response = await axios({
+    url: "http://localhost:3000/products",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   const output = response.data;
   expect(output).toHaveLength(4);
+  expect(output.at(0)?.idProduct).toBe("1");
+  expect(output.at(1)?.idProduct).toBe("2");
+  expect(output.at(2)?.idProduct).toBe("3");
+  expect(output.at(3)?.idProduct).toBe("4")
+
 });
 
+test("should list products em CSV ", async function () {
+  const response = await axios({
+    url: "http://localhost:3000/products",
+    headers: {
+      "Content-Type": "text/csv",
+    },
+  });
+  const output = response.data;
+  expect(output).toBe("1;shampoo;17.0000/n2;shampoo;48.0000/n3;condicionador;22.0000/n4;sabonete;2.0000");
+});
