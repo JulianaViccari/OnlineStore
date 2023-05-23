@@ -13,8 +13,7 @@ test("Should created new order ", function () {
   );
   let product1 = new Product("1", "Dove", "shampoo", 17.9, 0, 0, 0, 0);
   let orderDetail1 = new OrderDetail(product1, 2);
-  let orderId = crypto.randomUUID();
-  let order = new Order(orderId, client);
+  let order = new Order(client);
   order.addItem(orderDetail1);
 
   expect(order.getClientAddress()).toBe(
@@ -28,8 +27,7 @@ test("must not repeat item in input", async function () {
   let orderDetail1 = new OrderDetail(product1, 2);
   let orderDetail2 = new OrderDetail(product1, 2);
   let orderDetails = [orderDetail1, orderDetail2];
-  let orderId = crypto.randomUUID();
-  let order = new Order(orderId, client);
+  let order = new Order(client);
 
   expect(() =>
     orderDetails.forEach((orderDetail) => {
@@ -61,8 +59,7 @@ test("Should created new order an order with 3 products and calculate the total 
   let orderDetail2 = new OrderDetail(product2, 2);
   let orderDetail3 = new OrderDetail(product3, 2);
   let orderDetails = [orderDetail1, orderDetail2, orderDetail3];
-  let orderId = crypto.randomUUID();
-  let order = new Order(orderId, client);
+  let order = new Order(client);
   orderDetails.forEach((orderDetail) => {
     order.addItem(orderDetail);
   });
@@ -74,20 +71,12 @@ test("Should created new order an order with 3 products and calculate the total 
   expect(order.getAmount()).toBe(101.6);
 });
 
-test.skip("Should not created order cpf invalid", function () {
-  let client = new Client("", "407.302.178", "", "");
-  let orderId = crypto.randomUUID();
-
-  expect(() => new Order(orderId, client)).toThrow(new Error("Invalid cpf"));
-});
-
 test("Should create order and generate code", function () {
   let client = new Client("", "407.302.170-27", "", "");
 
   let product1 = new Product("1", "Dove", "shampoo", 17.9, 0, 0, 0, 0);
   let orderDetail1 = new OrderDetail(product1, 2);
-  let orderId = crypto.randomUUID();
-  let order = new Order(orderId, client);
+  let order = new Order(client);
   order.addItem(orderDetail1);
 
   expect(order.code).toBe("202300000001");

@@ -12,10 +12,11 @@ export default class OrderFactory {
     const clientDTO = this.buildClientDTO(order.getClient())
     const orderDetailsDTO = this.buildOrderDetailsDTO(order.getDetails());
     const orderDTO = new OrderDTO(
-      order.getCode(),
+      order.getId(),
       orderDetailsDTO,
       clientDTO,
-      order.getAmount()
+      order.getAmount(),
+      order.getCode(),
     );
     return orderDTO;
   }

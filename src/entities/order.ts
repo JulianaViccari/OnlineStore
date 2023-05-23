@@ -1,19 +1,20 @@
 import Client from "./client";
 import Coupon from "./coupon";
 import OrderDetail from "./order_detail";
+import crypto from "crypto";
 
 export default class Order {
+  id: string;
   code: string;
   orderDetails: Array<OrderDetail>;
   coupon?: Coupon
 
   constructor(
-    readonly id: string,
     readonly client: Client,
     readonly date: Date = new Date(),
     readonly sequence: number = 1
   ) {
-    this.id = id;
+    this.id = crypto.randomUUID();
     this.code = `${date.getFullYear()}${new String(sequence).padStart(8, "0")}`;
     this.client = client;
     this.orderDetails = [];

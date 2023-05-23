@@ -16,14 +16,21 @@ test("should created new Client", function () {
   expect(client.getEmail()).toBe("h.v@gmail.com");
 });
 
-test("not shold created new Client, because invalid CPF", function () {
+test.each([
+  "406.302.170-37",
+  "406.302.170",
+  "406"
+])
+("not should created new Client, because invalid CPF", function (cpf: string) {
   expect(
-    () =>
-      new Client(
-        "Henrique Viccari",
-        "12312312",
-        "h.v@gmail.com",
-        "rua 1, 55, bairro Felidz, cep: 14620-000, orlândia-Sp"
-      )
-  ).toThrow("Invalid cpf");
+    () => new Client("", cpf, "", "")).toThrow("Invalid cpf");
+});
+
+test.each([
+  "407.302.170-27",
+  "684.053.160-00",
+  "746.971.314-01"
+])("should created new Client validated %s", function (cpf: string) {
+  expect(
+    () => new Client("", cpf, "", "")).toBeDefined();
 });

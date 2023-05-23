@@ -32,6 +32,7 @@ create table if not exists clients(
 
 create table if not exists orders(
     id varchar(100) not null,
+    code varchar(100) not null,
     client_cpf varchar(14) not null,
     status varchar(50) null,
     created_at timestamp default current_timestamp,

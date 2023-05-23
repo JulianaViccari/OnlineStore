@@ -1,3 +1,4 @@
+import ProductDTO from "../../dtos/product_dto";
 import Product from "../../entities/product";
 import ProductRepository from "../product_repository_interface";
 
@@ -14,7 +15,10 @@ export default class ProductInMemoryRepository implements ProductRepository {
       new Product("4", "Lux", "sabonete", 2.0, 8, 20, 20, 3),
     ];
   }
-  async get(productId: string): Promise<Product> {
+  async list():  Promise<Product[]> {
+    throw new Error("Method not implemented.");
+  }
+  async get(productId: string):  Promise<Product> {
     return this.productsDB.filter((p) => p.getId() === productId)[0];
   }
 }

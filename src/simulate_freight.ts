@@ -1,4 +1,3 @@
-
 export default class SimulateFreight {
   
   static calculate(product: any): number {

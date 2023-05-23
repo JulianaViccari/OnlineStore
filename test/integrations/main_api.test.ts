@@ -135,7 +135,15 @@ test("must return a request through the code", async function () {
   };
   const response = await axios.post("http://localhost:3000/checkout", input);
   const orderId = response.data.orderId;
-  const respGetOrder = await axios.get(`http://localhost:3000/${orderId}`);
+  const respGetOrder = await axios.get(`http://localhost:3000/orders/${orderId}`);
   expect(respGetOrder.status).toBe(200);
   expect(respGetOrder.data["id"]).toBe(orderId);
 });
+
+test("should list products", async function () {
+  const response = await axios.get("http://localhost:3000/products");
+  // console.log(response)
+  const output = response.data;
+  expect(output).toHaveLength(4);
+});
+

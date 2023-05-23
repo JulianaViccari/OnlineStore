@@ -3,13 +3,18 @@ import CouponInMemoryRepository from "./repository/implementations/coupon_in_mem
 import OrderDetail from "./entities/order_detail";
 import Product from "./entities/product";
 import ProductInMemoryRepository from "./repository/implementations/product_in_memory_repository";
-import OrderMysqlRepository from "./repository/implementations/order_mysql_repository";
+import OrderSqlRepository from "./repository/implementations/order_sql_repository";
+import DatabaseRepositoryFactory from "./factories/database_repository_factory";
+import MySQLAdapter from "./repository/implementations/msql_adapters";
 const input: { cpf: string; items: OrderDetail[]; from: string; to: string } = {
   cpf: "",
   items: [],
   from: "",
   to: "",
 };
+const connection = new MySQLAdapter();
+connection.connect();
+const repositoryFactory = new DatabaseRepositoryFactory(connection);
 
 process.stdin.on("data", function (data) {
   const command = data.toString().replace(/\n/g, "");
@@ -41,15 +46,7 @@ process.stdin.on("data", function (data) {
   }
   if (command.startsWith("checkout")) {
     try {
-      const productsRepository = new ProductInMemoryRepository();
-      const orderRepository = new OrderMysqlRepository();
-      const couponRepository = new CouponInMemoryRepository();
-
-      const output = new Checkout(
-        productsRepository,
-        couponRepository,
-        orderRepository
-      ).execute(input);
+      const output = new Checkout(repositoryFactory).execute(input);
       console.log(output);
       return;
     } catch (error: any) {
