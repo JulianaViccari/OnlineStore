@@ -1,4 +1,4 @@
-import OrderDTO from "../dtos/order_dto";
+import OrderDTO from "../../dtos/order_dto";
 
 export default interface OrderRepository {
   count(): Promise<number>;

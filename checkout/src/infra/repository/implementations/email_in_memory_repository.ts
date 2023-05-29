@@ -1,4 +1,4 @@
-import EmailGateway from "../email_gateway_interface";
+import EmailGateway from "../../../application/repository/email_gateway_interface";
 
 export default class EmailInMemoryRepository implements EmailGateway {
   async send(

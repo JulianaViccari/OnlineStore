@@ -1,5 +1,5 @@
 export default class ProductDTO {
-    id?: string;
+    id: string;
     name?: string;
     description?: string;
     price?: number;
@@ -9,7 +9,7 @@ export default class ProductDTO {
     weight?: number;
   
     constructor(
-      id?: string,
+      id: string,
       name?: string,
       description?: string,
       price?: number,

@@ -15,7 +15,7 @@ export default class Order {
     readonly sequence: number = 1
   ) {
     this.id = crypto.randomUUID();
-    this.code = `${date.getFullYear()}${new String(sequence).padStart(8, "0")}`;
+    this.code = `${date.getFullYear()}${String(sequence).padStart(8, "0")}`;
     this.client = client;
     this.orderDetails = [];
   }

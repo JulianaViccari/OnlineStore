@@ -7,7 +7,9 @@ export default class Product {
     readonly width: number,
     readonly height: number,
     readonly length: number,
-    readonly weight: number
+    readonly weight: number,
+    readonly density?: number,
+    readonly volume?: number
   ) {
     if ( this.getHeight() < 0 ||this.getLength() < 0 ||this.getWidth() < 0) throw new Error("Invalid dimensions")
     if (this.getWeight() < 0) throw new Error("Invalid weight")
@@ -19,6 +21,8 @@ export default class Product {
     this.height = height;
     this.length = length;
     this.weight = weight;
+    this.density = density;
+    this.volume = volume;
   }
 
   public getId(): string {
@@ -53,13 +57,13 @@ export default class Product {
     return this.weight === undefined ? 0 : this.weight;
   }
 
-  getVolume(): number {
-    return ((((this.width / 100) * this.height) / 100) * this.length) / 100;
-  }
+  // getVolume(): number {
+  //   return ((((this.width / 100) * this.height) / 100) * this.length) / 100;
+  // }
 
-  getDensity() {
-    return this.weight / this.getVolume();
-  }
+  // getDensity() {
+  //   return this.weight / this.getVolume();
+  // }
 
   hasNegativeDimensions(): boolean {
     return (

@@ -2,6 +2,8 @@ import Checkout from "./application/usecase/checkout";
 import OrderDetail from "./domain/entities/order_detail";
 import Product from "./domain/entities/product";
 import DatabaseRepositoryFactory from "./infra/factory/database_repository_factory";
+import GatewayHttpFactory from "./infra/factory/gateway_http_factory";
+import AxiosAdapter from "./infra/http/axios_adapter";
 import MySQLAdapter from "./infra/repository/implementations/msql_adapters";
 const input: { cpf: string; items: OrderDetail[]; from: string; to: string } = {
   cpf: "",
@@ -11,6 +13,8 @@ const input: { cpf: string; items: OrderDetail[]; from: string; to: string } = {
 };
 const connection = new MySQLAdapter();
 connection.connect();
+const httpClient = new AxiosAdapter();
+const gatewayFactory = new GatewayHttpFactory(httpClient);
 const repositoryFactory = new DatabaseRepositoryFactory(connection);
 
 process.stdin.on("data", function (data) {
@@ -43,7 +47,7 @@ process.stdin.on("data", function (data) {
   }
   if (command.startsWith("checkout")) {
     try {
-      const output = new Checkout(repositoryFactory).execute(input);
+      const output = new Checkout(repositoryFactory,gatewayFactory).execute(input);
       console.log(output);
       return;
     } catch (error: any) {

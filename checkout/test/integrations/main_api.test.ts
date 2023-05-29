@@ -1,6 +1,9 @@
 import axios from "axios";
 import Product from "../../src/domain/entities/product";
 import OrderDetail from "../../src/domain/entities/order_detail";
+import sinon from "sinon";
+import CatalogHttpGateway from "../../src/infra/gateway/catalog_http_gateway";
+import AxiosAdapter from "../../src/infra/http/axios_adapter";
 
 axios.defaults.validateStatus = function () {
   return true;
@@ -96,14 +99,14 @@ test("should make an order with three items with coupon invalid", async function
   expect(output.message).toBe("Coupon invalid");
 });
 
-test("should make an order with two items with shipment", async function () {
+test("should make an order with one item with shipment", async function () {
   let products = [
-    new Product("1", "Dove", "shampoo", 17.0, 0, 0, 0, 0),
-    new Product("2", "Siege", "shampoo", 48.0, 0, 0, 0, 0),
+    new Product("1", "Dove", "shampoo", 17.0, 1, 1, 1, 1),
+    new Product("3", "Dove", "condicionador", 22.0, 1, 1, 1, 1),
   ];
   let listOrderDetails = [
     new OrderDetail(products[0], 2),
-    new OrderDetail(products[1], 1),
+    new OrderDetail(products[1], 2)
   ];
 
   const input = {
@@ -114,8 +117,9 @@ test("should make an order with two items with shipment", async function () {
   };
   const response = await axios.post("http://localhost:3000/checkout", input);
   const output = response.data;
-  expect(output.freight).toBe(6010);
-  expect(output.total).toBe(6092);
+  expect(output.freight).toBe(12000);
+  expect(output.total).toBe(12078);
+  // productRepositoryMock.restore();
 });
 
 test("must return a request through the code", async function () {

@@ -1,3 +1,4 @@
+import GatewayFactory from "../../application/factory/gateway_factory";
 import RepositoryFactory from "../../application/factory/repository_factory";
 import Checkout from "../../application/usecase/checkout";
 import GetOrder from "../../application/usecase/get_order";
@@ -6,10 +7,10 @@ import CsvPresenter from "../presenter/Csv_presenter";
 import JsonPresenter from "../presenter/json_presenter";
 
 export default class UsecaseFactory {
-  constructor(readonly repositoryFactory: RepositoryFactory) {}
+  constructor(readonly repositoryFactory: RepositoryFactory, readonly gatewayFactory: GatewayFactory) {}
 
   createCheckout(): Checkout {
-    return new Checkout(this.repositoryFactory);
+    return new Checkout(this.repositoryFactory, this.gatewayFactory);
   }
   createdGetOrder(): GetOrder {
     return new GetOrder(this.repositoryFactory);

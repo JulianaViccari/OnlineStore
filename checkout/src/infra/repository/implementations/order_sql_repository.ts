@@ -12,7 +12,7 @@ export default class OrderSqlRepository implements OrderRepository {
     try {
       const query = "select count(1) as orders_count from orders";
       const [rows, _] = await this.connection.query(query, undefined);
-      return rows[0];
+      return rows[0]["orders_count"];
     } catch (error: any) {
       throw new Error(error.message);
     }
