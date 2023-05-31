@@ -89,6 +89,27 @@ test("should make an order with three items with coupon", async function () {
   expect(output.total).toBe(118.4);
 });
 
+test("should make an order with two items without calculate distance", async function () {
+  const productRepositoryStub = sinon
+    .stub(CatalogHttpGateway.prototype, "getProduct")
+    .resolves(new Product("1", "Dove", "shampoo", 17.0, 1, 1, 1, 1, 0.03, 100));
+  let products = [
+    new Product("1", "Dove", "shampoo", 17.0, 1, 1, 1, 1, 0.03, 100),
+  ];
+  let listOrderDetails = [new OrderDetail(products[0], 2)];
+
+  const input = {
+    cpf: "407.302.170-27",
+    items: listOrderDetails,
+    from: "99015600", //cep origem
+    to: "22060030", //cep destino
+  };
+  const output = await checkout.execute(input);
+  expect(output.freight).toBe(49.15651683598706);
+  expect(output.total).toBe(83.15651683598706);
+  productRepositoryStub.restore();
+});
+
 test("should make an order with two items with shipment", async function () {
   const productRepositoryStub = sinon
     .stub(CatalogHttpGateway.prototype, "getProduct")
