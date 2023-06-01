@@ -49,12 +49,20 @@ create table if not exists order_details(
     foreign key (product_id) references products(id)
 );
 
+create table if not exists zip_codes(
+    code text,
+    lat numeric,
+    longi numeric
+);
+
 create user if not exists app_user identified by '123';
 grant insert, select, delete, update on coupons to app_user;
 grant insert, select, delete, update on products to app_user;
 grant insert, select, delete, update on clients to app_user;
 grant insert, select, delete, update on order_details to app_user;
 grant insert, select, delete, update on orders to app_user;
+grant insert, select, delete, uexit
+pdate on zip_codes to app_user;
 
 insert into coupons (code, valid_at, percent, quantity) values ("discount10", "2023-12-31T23:59:59.0000-03:00", 10, 15);
 insert into coupons (code, valid_at, percent, quantity) values ("discount20", "2023-6-24T23:59:59.0000-03:00", 20, 15);
@@ -64,3 +72,5 @@ insert into products (id, name, description, price, width, height, length, weigh
 insert into products (id, name, description, price, width, height, length, weight) values ("3", "Dove", "condicionador", 22.0, 8, 20, 20, 300);
 insert into products (id, name, description, price, width, height, length, weight) values ("4", "Lux", "sabonete", 2.0, 8, 20, 20, -3);
 insert into clients (cpf, name, email, address) values ("407.302.170-27", "Antonio Silva", "antonio.silva@gmail.com", "rua 10");
+insert into zip_codes (code, lat, longi) values ("22060030", -27.5945, -48.5477);
+insert into zip_codes (code, lat, longi) values ("99015600", -22.9129, -43.2003);
