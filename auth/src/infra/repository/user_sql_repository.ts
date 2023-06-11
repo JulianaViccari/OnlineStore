@@ -4,6 +4,25 @@ import DatabaseConnection from "../database/database_connection";
 
 export default class UserMysqlRepository implements UserRepository{
     constructor(readonly connection: DatabaseConnection){}
+  
+    
+    async create(user: User): Promise<void> {
+      if (user === undefined) return undefined;
+      try {
+        const createUserSQL =
+        "insert into users (email, password, salt) values(?, ?, ?)";
+        const createUserParameters = [
+          user.email.email,
+          user.password.value,
+          user.password.salt
+        ];
+        await this.execInsertStatement(createUserSQL, createUserParameters);
+        
+      } catch (error: any) {
+        throw new Error(error.message);
+      }
+    }
+    
     async get(email: string): Promise<Array<User>>{
         try {
             const query = "select email, password, salt from users where email = ?";
@@ -13,26 +32,18 @@ export default class UserMysqlRepository implements UserRepository{
         } catch (error:any) {
             throw new Error(error.message)
             
-        }
-       ;
+        };
     }
 
-    async create(user: User): Promise<void> {
-        if (user === undefined) return undefined;
-        try {
-          const createUserSQL =
-            "insert into users (email, password, salt) values(?, ?, ?)";
-          const createUserParameters = [
-            user.email.email,
-            user.password.value,
-            user.password.salt
-          ];
-          await this.execInsertStatement(createUserSQL, createUserParameters);
-    
-        } catch (error: any) {
-            //console.log(error.message)
-          throw new Error(error.message);
-        }
+    async delete(email: string): Promise<void> {
+      if (email === undefined) return undefined;
+      try {
+        const query = "delete from users where email = ?"
+        await this.connection.query(query, [email]);
+        
+      } catch (error: any) {
+        throw new Error(error.message);
+      }
     }
 
     private async execInsertStatement(

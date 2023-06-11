@@ -5,6 +5,7 @@ import UserMysqlRepository from "../repository/user_sql_repository";
 
 export default class DatabaseRepositoryFactory implements RepositoryFactory {
   constructor(readonly connection: DatabaseConnection) {}
+  
   createUserRepository(): UserRepository {
     return new UserMysqlRepository(this.connection)
   }

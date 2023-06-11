@@ -1,11 +1,9 @@
-import UserRepository from "../repository/user_repository_interface";
-import RepositoryFactory from "../factory/repository_factory";
 import TokenGenerate from "../../domain/entities/token_generate";
+import UserMysqlRepository from "../../infra/repository/user_sql_repository";
 
 export default class Login {
-  userRepository: UserRepository;
-  constructor(readonly repositoryFactory: RepositoryFactory) {
-    this.userRepository = repositoryFactory.createUserRepository();
+  
+  constructor(readonly userRepository: UserMysqlRepository) {
   }
 
   async execute(input: Input): Promise<Output> {

@@ -1,4 +1,4 @@
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import User from "./User";
 
 export default class TokenGenerate {
@@ -14,5 +14,9 @@ export default class TokenGenerate {
       },
       this.key
     );
+  }
+
+  verify(token: string): any {
+    return verify(token, this.key);
   }
 }

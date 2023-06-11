@@ -11,4 +11,4 @@ const repositoryFactory = new DatabaseRepositoryFactory(connection);
 const httpServer = new ExpressAdapter();
 const usecaseFactory = new UsecaseFactory(repositoryFactory);
 new HttpController(httpServer, usecaseFactory);
-httpServer.app.listen(3001);
+httpServer.app.listen(3005);
