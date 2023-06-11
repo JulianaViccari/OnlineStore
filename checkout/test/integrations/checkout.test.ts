@@ -22,7 +22,7 @@ beforeEach(async () => {
   const gatewayFactory = new GatewayHttpFactory(httpClient);
 
   checkout = new Checkout(repositoryFactory, gatewayFactory);
-  getOrder = new GetOrder(repositoryFactory);
+  getOrder = new GetOrder(repositoryFactory, gatewayFactory);
 });
 
 test("must not create an order with invalid CPF", async function () {

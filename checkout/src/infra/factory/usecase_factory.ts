@@ -1,3 +1,4 @@
+import AuthDecorator from "../../application/decorator/auth_decorator";
 import GatewayFactory from "../../application/factory/gateway_factory";
 import RepositoryFactory from "../../application/factory/repository_factory";
 import Checkout from "../../application/usecase/checkout";
@@ -9,11 +10,11 @@ import JsonPresenter from "../presenter/json_presenter";
 export default class UsecaseFactory {
   constructor(readonly repositoryFactory: RepositoryFactory, readonly gatewayFactory: GatewayFactory) {}
 
-  createCheckout(): Checkout {
-    return new Checkout(this.repositoryFactory, this.gatewayFactory);
+  createCheckout() {
+    return new AuthDecorator(new Checkout(this.repositoryFactory, this.gatewayFactory), this.gatewayFactory);
   }
-  createdGetOrder(): GetOrder {
-    return new GetOrder(this.repositoryFactory);
+  createdGetOrder() {
+    return new AuthDecorator(new GetOrder(this.repositoryFactory, this.gatewayFactory), this.gatewayFactory);
   }
   createdGetProducts(type: string): GetProducts {
     let presenter;

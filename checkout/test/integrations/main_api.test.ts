@@ -106,7 +106,7 @@ test("should make an order with one item with shipment", async function () {
   ];
   let listOrderDetails = [
     new OrderDetail(products[0], 2),
-    new OrderDetail(products[1], 2)
+    new OrderDetail(products[1], 2),
   ];
 
   const input = {
@@ -172,4 +172,29 @@ test("should list products em CSV ", async function () {
   expect(output).toBe(
     "1;shampoo;17.0000/n2;shampoo;48.0000/n3;condicionador;22.0000/n4;sabonete;2.0000"
   );
+});
+
+test("should make an order with three items and verify authentication", async function () {
+  let products = [
+    new Product("1", "Dove", "shampoo", 17.0, 0, 0, 0, 0),
+    new Product("2", "Siege", "shampoo", 48.0, 0, 0, 0, 0),
+    new Product("3", "Dove", "condicionador", 22.0, 0, 0, 0, 0),
+  ];
+  let listOrderDetails = [
+    new OrderDetail(products[0], 2),
+    new OrderDetail(products[1], 1),
+    new OrderDetail(products[2], 3),
+  ];
+  const input = {
+    cpf: "407.302.170-27",
+    items: listOrderDetails,
+  };
+  const response = await axios.post("http://localhost:3000/checkout", input, {headers: {token: "eyJlbWFpbCI6ImhlbnJpcXVlQGdtYWlsLmNvbSIsImlhdCI6MTY3NzY3NTYwMDAwMCwiZXhwaXJlc0luIjoxMDAwMDB9"}});
+  const codeId = response.data.code;
+  const respGetOrder = await axios.get(
+    `http://localhost:3000/orders/${codeId}`
+  );
+  expect(respGetOrder.data["amount"]).toBe(148);
+  expect(respGetOrder.status).toBe(200);
+  expect(respGetOrder.data["code"]).toBe(codeId);
 });

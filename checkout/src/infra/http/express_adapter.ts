@@ -5,6 +5,7 @@ import express, { Request, Response } from "express";
 export default class ExpressAdapter implements HttpServer {
   app: any;
   constructor() {
+    
     this.app = express();
     this.app.use(express.json());
   }

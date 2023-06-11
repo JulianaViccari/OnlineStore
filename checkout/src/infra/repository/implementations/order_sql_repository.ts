@@ -22,10 +22,11 @@ export default class OrderSqlRepository implements OrderRepository {
     if (order === undefined) return undefined;
     try {
       const createOrderSQL =
-        "insert into orders (id, code, client_cpf, status) values(?, ?, ?, ?)";
+        "insert into orders (id, code, amount, client_cpf, status) values(?, ?, ?, ?, ?)";
       const createOrderParameters = [
         order.id,
         order.code,
+        order.amount,
         order.client?.cpf,
         "created",
       ];
@@ -52,10 +53,11 @@ export default class OrderSqlRepository implements OrderRepository {
     }
   }
 
-  public async getById(orderId: string): Promise<OrderDTO | undefined> {
+  public async getById(code: string): Promise<OrderDTO | undefined> {
     try {
-      const query = "select id, client_cpf, status from orders where id = ?";
-      const [rows, _] = await this.connection?.query(query, [orderId]);
+      const query =
+        "select id, code, client_cpf, status, amount from orders where code = ?";
+      const [rows, _] = await this.connection?.query(query, [code]);
       const result = this.bind(rows, _);
       if (result === undefined || result.length === 0) return undefined;
       return result[0];
@@ -66,7 +68,7 @@ export default class OrderSqlRepository implements OrderRepository {
 
   public async getAll(): Promise<OrderDTO[] | undefined> {
     try {
-      const query = "select id, client_cpf, status from orders";
+      const query = "select id, code, client_cpf, status, amount from orders";
       const [rows, _] = await this.connection?.query(query, []);
       return this.bind(rows, _);
     } catch (error: any) {
@@ -84,13 +86,15 @@ export default class OrderSqlRepository implements OrderRepository {
 
     const result: Array<OrderDTO> = [];
     for (const row of rows) {
-      const { id, client_cpf } = row;
+      const { id, client_cpf, code, amount } = row;
       result.push(
         new OrderDTO(
           id,
           Array<OrderDetailDTO>(),
-          new ClientDTO("", client_cpf, "", "")
-        )
+          new ClientDTO("", client_cpf, "", ""),
+          parseFloat(amount),
+          code
+        ),
       );
     }
 

@@ -4,22 +4,23 @@ import OrderDetail from "../../domain/entities/order_detail";
 import OrderFactory from "../../domain/factories/order_factory";
 import GatewayFactory from "../factory/gateway_factory";
 import RepositoryFactory from "../factory/repository_factory";
+import AuthGateway from "../gateway/auth_gateway";
 import CatalogGateway from "../gateway/catalog_gateway";
 import FreightGateway from "../gateway/freight_gateway";
 import CouponRepository from "../repository/coupon_repository_interface";
 import OrderRepository from "../repository/order_repository_interface";
-import ProductRepository from "../repository/product_repository_interface";
+import Usecase from "./usecase";
 // import SimulateFreight from "../repository/simulate_freight";
 
 type Output = {
+  code: string;
   total: number;
   freight: number;
 };
 
-export default class Checkout {
+export default class Checkout implements Usecase{
   orderRepository: OrderRepository;
   couponRepository: CouponRepository;
-  productRepository: ProductRepository;
   catalogGateway: CatalogGateway;
   freightGateway: FreightGateway;
 
@@ -29,18 +30,19 @@ export default class Checkout {
   ) {
     this.orderRepository = repositoryFactory.createOrderRepository();
     this.couponRepository = repositoryFactory.createCouponRepository();
-    this.productRepository =
-      repositoryFactory.createProductRepositoryInMemory();
+
+    repositoryFactory.createProductRepositoryInMemory();
     this.catalogGateway = gatewayFactory.createCatalogGateway();
     this.freightGateway = gatewayFactory.createFreightGateway();
   }
   public async execute(input: any): Promise<Output> {
     try {
-      const output = { freight: 0, total: 0 };
+      const output = { code: "", freight: 0, total: 0 };
       const sequence = await this.orderRepository.count();
       const client = new Client("", input.cpf, "", "");
       const order = new Order(client, input.date, sequence + 1);
-      const inputFreight: any ={
+      output.code = order.code;
+      const inputFreight: any = {
         product: [],
         from: input.from,
         to: input.to,
@@ -60,7 +62,9 @@ export default class Checkout {
       }
 
       if (input.from && input.to) {
-        const outputFreight = await this.freightGateway.simulateFreight(inputFreight);
+        const outputFreight = await this.freightGateway.simulateFreight(
+          inputFreight
+        );
         output.freight += outputFreight.freight;
       }
 
