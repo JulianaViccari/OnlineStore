@@ -40,6 +40,8 @@ create table if not exists orders(
     foreign key (client_cpf) references clients(cpf)
 );
 
+alter table orders add amount numeric(15,4) default 0.0;
+
 create table if not exists order_details(
     order_id varchar(100) not null,
     product_id varchar(100) not null,
