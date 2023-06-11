@@ -17,6 +17,4 @@ module.exports = {
       script: "npx ts-node ../freight/src/main_api.ts"
     }
   ],
-
-  
 };
